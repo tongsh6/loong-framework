@@ -20,4 +20,8 @@ public final class HelperLoader {
             ClassUtil.loadClass(cls.getName());
         }
     }
+
+    public static void main(String[] args) {
+        init();
+    }
 }
