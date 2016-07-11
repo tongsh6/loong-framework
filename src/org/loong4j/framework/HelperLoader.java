@@ -1,9 +1,6 @@
 package org.loong4j.framework;
 
-import org.loong4j.framework.helper.BeanHelper;
-import org.loong4j.framework.helper.ClassHelper;
-import org.loong4j.framework.helper.ControllerHelper;
-import org.loong4j.framework.helper.IocHelper;
+import org.loong4j.framework.helper.*;
 import org.loong4j.framework.util.ClassUtil;
 
 /**
@@ -11,8 +8,10 @@ import org.loong4j.framework.util.ClassUtil;
  */
 public final class HelperLoader {
     public static void init() {
-        Class<?>[] classList = {ClassHelper.class,
+        Class<?>[] classList = {
+                ClassHelper.class,
                 BeanHelper.class,
+                AopHelper.class,
                 IocHelper.class,
                 ControllerHelper.class
         };
