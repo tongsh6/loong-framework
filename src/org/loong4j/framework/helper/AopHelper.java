@@ -1,6 +1,8 @@
 package org.loong4j.framework.helper;
 
 import org.loong4j.framework.annotation.Aspect;
+import org.loong4j.framework.annotation.Service;
+import org.loong4j.framework.annotation.Transaction;
 import org.loong4j.framework.proxy.AspectProxy;
 import org.loong4j.framework.proxy.Proxy;
 import org.loong4j.framework.proxy.ProxyManager;
@@ -64,18 +66,8 @@ public class AopHelper {
 
     private static Map<Class<?>, Set<Class<?>>> createProxyMap() throws Exception {
         Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<Class<?>, Set<Class<?>>>();
-
-        Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
-
-        for (Class<?> proxyClass : proxyClassSet) {
-            if (proxyClass.isAnnotationPresent(Aspect.class)) {
-                Aspect aspect = proxyClass.getAnnotation(Aspect.class);
-                Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
-                proxyMap.put(proxyClass, targetClassSet);
-            }
-            return proxyMap;
-        }
-
+        addAspectProxy(proxyMap);
+        addTransactionProxy(proxyMap);
         return proxyMap;
     }
 
@@ -88,4 +80,20 @@ public class AopHelper {
         return targetClassSet;
     }
 
+    private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception {
+        Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
+
+        for (Class<?> proxyClass : proxyClassSet) {
+            if (proxyClass.isAnnotationPresent(Aspect.class)) {
+                Aspect aspect = proxyClass.getAnnotation(Aspect.class);
+                Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
+                proxyMap.put(proxyClass, targetClassSet);
+            }
+        }
+    }
+
+    private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap) {
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetBySuper(Service.class);
+        proxyMap.put(Transaction.class, serviceClassSet);
+    }
 }
